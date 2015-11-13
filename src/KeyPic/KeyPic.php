@@ -38,7 +38,7 @@ class KeyPic
      * keypic webservice host
      * @var string
      */
-    private $host = 'http://ws.keypic.com';
+    private $host = 'ws.keypic.com';
     
     /**
      * keypic formID, unique for each client
@@ -194,12 +194,12 @@ class KeyPic
 
     /**
      * requesting new token or getting its value if it is already generated
-     * @param type $Token
-     * @param type $ClientEmailAddress
-     * @param type $ClientUsername
-     * @param type $ClientMessage
-     * @param type $ClientFingerprint
-     * @param type $Quantity
+     * @param String $Token
+     * @param String $ClientEmailAddress
+     * @param String $ClientUsername
+     * @param String $ClientMessage
+     * @param String $ClientFingerprint
+     * @param int $Quantity
      * @return boolean
      */
     public function getToken(
@@ -282,6 +282,16 @@ class KeyPic
         
         return $ret;
     }
+    
+    /**
+     * render necessary keypic input and script to use in html form
+     * @param string $RequestType
+     * @param string $WidthHeight
+     * @return String
+     */
+    public function renderHtml($RequestType = 'getScript', $WidthHeight = '336x280'){
+        return $this->getTokenInput().$this->getIt($RequestType, $WidthHeight);
+    }
 
     /**
      * Detect if entry is Spam? from 0% to 100%
@@ -344,7 +354,7 @@ class KeyPic
 
         $response = $this->sendRequest($fields);
         if (empty($response) !== true) {
-            return json_decode($response);
+            return $response;
         } else {
             return false;
         }
@@ -356,19 +366,15 @@ class KeyPic
      * @return boolean|array
      */
     private function sendRequest(array $fields)
-    {
-        
-        $keypic_request = new Psr7\Request(
-            "POST",
-            $this->host,
-            ['content-type'=>'application/x-www-form-urlencoded',
-               'User-Agent' => $this->UserAgent],
-            http_build_query($fields),
-            '1.0'
-        );
-        
+    {                
         $client = new \GuzzleHttp\Client(['timeout'=>3]);
-        $response = $client->send($keypic_request);
+        $response = $client->post("http://".$this->host, 
+             ['headers' => ['content-type' => 'application/x-www-form-urlencoded',
+                            'User-Agent'   => $this->UserAgent],
+              'body'  => $fields,
+              'version' => 1.0  
+              ]);
+        
         $result = $response->getBody()->getContents();
         
         if (empty($result) !== true) {
@@ -397,21 +403,21 @@ class KeyPic
         $Quantity = 1
     ) {
         
-            $serverParams = $this->request->getServerParams();
-            $fields = [];
+            $serverParams = $this->request->getServerParams();           
+            $fields = [];            
             
             $fields['FormID'] = $this->FormID;
             $fields['RequestType'] = $RequestType;
             $fields['ResponseType'] = '2';
             $fields['Quantity'] = $Quantity;
-            $fields['ServerName'] = $serverParams['server_name'];
-            $fields['ClientIP'] = $serverParams['remote_client'];
-            $fields['ClientUserAgent'] = $this->request->getHeader('user_agent');
-            $fields['ClientAccept'] = $this->request->getHeader('accept');
-            $fields['ClientAcceptEncoding'] = $this->request->getHeader('accept_encoding');
-            $fields['ClientAcceptLanguage'] = $this->request->getHeader('accept_language');
-            $fields['ClientAcceptCharset'] = $this->request->getHeader('accept_charset');
-            $fields['ClientHttpReferer'] = $this->request->getHeader('referer');
+            $fields['ServerName'] = $serverParams['SERVER_NAME'];
+            $fields['ClientIP'] = $serverParams['REMOTE_ADDR'];
+            $fields['ClientUserAgent'] = $this->request->getHeader('user-agent')[0];
+            $fields['ClientAccept'] = $this->request->getHeader('accept')[0];
+            $fields['ClientAcceptEncoding'] = $this->request->getHeader('accept-encoding')[0];
+            $fields['ClientAcceptLanguage'] = $this->request->getHeader('accept-language')[0];
+            $fields['ClientAcceptCharset'] = $this->request->getHeader('accept-charset')[0];
+            $fields['ClientHttpReferer'] = $this->request->getHeader('referer')[0];
             $fields['ClientUsername'] = $ClientUsername;
             $fields['ClientEmailAddress'] = $ClientEmailAddress;
             $fields['ClientMessage'] = $ClientMessage;

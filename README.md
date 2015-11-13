@@ -42,11 +42,11 @@ if($psrRequest->getMethod() == "POST"){
 }
 ```
 
-In your form, place the call to `getIt()` method to render keypic pixel image or javascript as following:
+In your form, place the call to `renderHtml()` method to render pixel image or javascript, along with keypic hidden token field as following:
 ```html
 <form action="" method="post">
     <!-- Your form elements here -->
-    <?php echo $keypicObj->getIt(); ?>
+    <?php echo $keypicObj->renderHtml(); ?>
 </form>
 ```
 ## How to Contribute
