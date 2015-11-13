@@ -11,27 +11,69 @@ class KeyPic
     /*@var RequestInterface $request */
     private $request;
         
+    /**
+     * keypic API version number
+     * @var string
+     */
     private $version = '2.1';
+    
+    /**
+     * keypic API user agent text
+     * @var string
+     */
     private $UserAgent = 'Keypic PHP Class, Version: 2.1';
-    private $SpamPercentage = 70;
+    
+    /**
+     * keypic webservice host
+     * @var string
+     */
     private $host = 'http://ws.keypic.com';
+    
+    /**
+     * keypic formID, unique for each client
+     * @var string
+     */
     private $FormID;
+    
+    /**
+     * keypic publisher ID
+     * @var string
+     */
     private $PublisherID;
+    
+    /**
+     * Token generated from keypic API
+     * @var string
+     */
     private $Token;
+    
+    /**
+     * debug flag
+     * @var boolean
+     */
     private $Debug;
+    
+    /**
+     * name of token field hidden input
+     * @var string
+     */
     private $TokenInputName;
 
 
+    /**
+     * constructor with injecting psr-7 request in the object
+     * @param ServerRequestInterface $request
+     */
     public function __construct(ServerRequestInterface $request)
     {
         $this->request = $request;
     }
 
-    public function getHost()
-    {
-        return $this->host;
-    }
-
+    /**
+     * set API host value
+     * @param string $host
+     * @return \Zrashwani\KeyPic\KeyPic
+     */
     public function setHost($host)
     {
         $new = clone $this;
@@ -39,23 +81,11 @@ class KeyPic
         return $new;
     }
 
-    public function getSpamPercentage()
-    {
-        return $this->SpamPercentage;
-    }
-
-    public function setSpamPercentage($SpamPercentage)
-    {
-        $new = clone $this;
-        $new->SpamPercentage = $SpamPercentage;
-        return $new;
-    }
-
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
+    /**
+     * set keypic api version
+     * @param string $version
+     * @return \Zrashwani\KeyPic\KeyPic
+     */
     public function setVersion($version)
     {
         $new = clone $this;
@@ -63,6 +93,11 @@ class KeyPic
         return $new;
     }
 
+    /**
+     * set user agent
+     * @param string $UserAgent
+     * @return \Zrashwani\KeyPic\KeyPic
+     */
     public function setUserAgent($UserAgent)
     {
         $new = clone $this;
@@ -70,6 +105,11 @@ class KeyPic
         return $new;
     }
 
+    /**
+     * set keypic formId value
+     * @param string $FormID
+     * @return \Zrashwani\KeyPic\KeyPic
+     */
     public function setFormID($FormID)
     {
         $new = clone $this;
@@ -77,11 +117,11 @@ class KeyPic
         return $new;
     }
 
-    public function getFormID()
-    {
-        return $this->FormID;
-    }
-
+    /**
+     * set publisher Id value
+     * @param string $PublisherID
+     * @return \Zrashwani\KeyPic\KeyPic
+     */
     public function setPublisherID($PublisherID)
     {
         $new = clone $this;
@@ -89,6 +129,11 @@ class KeyPic
         return $new;
     }
 
+    /**
+     * set Debug value
+     * @param boolean $Debug
+     * @return \Zrashwani\KeyPic\KeyPic
+     */
     public function setDebug($Debug)
     {
         $new = clone $this;
@@ -96,11 +141,20 @@ class KeyPic
         return $new;
     }
     
+    /**
+     * get token hidden input name
+     * @return string
+     */
     public function getTokenInputName()
     {
         return $this->TokenInputName;
     }
     
+    /**
+     * set token input hidden field name
+     * @param string $tokenInputName
+     * @return \Zrashwani\KeyPic\KeyPic
+     */
     public function setTokenInputName($tokenInputName)
     {
         $new = clone $this;
@@ -108,6 +162,11 @@ class KeyPic
         return $new;
     }
 
+    /**
+     * check keypic formID if valid
+     * @param String $FormID
+     * @return boolean
+     */
     public function checkFormID($FormID)
     {
         $fields['RequestType'] = 'checkFormID';
