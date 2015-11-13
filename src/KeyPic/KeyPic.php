@@ -3,7 +3,6 @@
 namespace Zrashwani\KeyPic;
 
 use Psr\Http\Message\ServerRequestInterface;
-use GuzzleHttp\Psr7;
 
 /**
  * KeyPic
@@ -26,19 +25,19 @@ class KeyPic
      * keypic API version number
      * @var string
      */
-    private $version = '2.1';
+    private $version;
     
     /**
      * keypic API user agent text
      * @var string
      */
-    private $UserAgent = 'Keypic PHP Class, Version: 2.1';
+    private $UserAgent;
     
     /**
      * keypic webservice host
      * @var string
      */
-    private $host = 'ws.keypic.com';
+    private $host;
     
     /**
      * keypic formID, unique for each client
@@ -75,9 +74,12 @@ class KeyPic
      * constructor with injecting psr-7 request in the object
      * @param ServerRequestInterface $request
      */
-    public function __construct(ServerRequestInterface $request)
+    public function __construct(ServerRequestInterface $request, $vesion = '2.1')
     {
-        $this->request = $request;
+        $this->request   = $request;
+        $this->version   = $vesion;
+        $this->UserAgent = 'Keypic PHP Class, Version: '.$this->version;
+        $this->host      = 'ws.keypic.com';
     }
 
     /**
@@ -261,16 +263,18 @@ class KeyPic
             switch ($RequestType) {
                 case 'getImage':
                     $ret =  '<a href="http://' . $this->host . '/?RequestType=getClick&amp;Token=' .
-                        $this->Token . '" target="_blank"><img src="//' . $this->host .
-                        '/?RequestType=getImage&amp;Token=' . $this->Token . '&amp;WidthHeight=' .
-                        $WidthHeight . '&amp;PublisherID=' . $this->PublisherID .
-                        '" alt="Form protected by Keypic" /></a>';
+                        $this->Token . '" target="_blank"><img src="//' . $this->host
+                        . '/?RequestType=getImage&amp;Token=' . $this->Token
+                        . '&amp;WidthHeight=' . $WidthHeight . '&amp;Debug='.$this->Debug
+                        . '&amp;PublisherID=' . $this->PublisherID
+                        . '" alt="Form protected by Keypic" /></a>';
                     break;
 
                 default:
                     $ret =  '<script type="text/javascript" src="//' . $this->host .
-                        '/?RequestType=getScript&amp;Token=' . $this->Token . '&amp;WidthHeight='
-                        . $WidthHeight . '&amp;PublisherID=' . $this->PublisherID . '"></script>';
+                        '/?RequestType=getScript&amp;Token=' . $this->Token
+                        . '&amp;WidthHeight=' . $WidthHeight . '&amp;Debug='.$this->Debug
+                        . '&amp;PublisherID=' . $this->PublisherID . '"></script>';
                     break;
             }
         }
