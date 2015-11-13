@@ -1,5 +1,7 @@
 # Keypic
-=======================
+--------------------------------
+
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/c27c4551-ad2b-4621-b32d-c84e4bee6489/mini.png)](https://insight.sensiolabs.com/projects/c27c4551-ad2b-4621-b32d-c84e4bee6489)
 
 This library provides a wrapper to use [KeyPic][keypic_site] web service for spam detection, 
 by using any [PSR-7][psr7_fig] compliant request (`RequestInterface` objects).
