@@ -20,8 +20,10 @@ Then run `composer install`.
 To use keypic web service with any request that implements [PSR-7][psr7_fig]:
 
 ```php
+require 'vendor/autoload.php';
+use Zrashwani\KeyPic\KeyPic;
 
-$keypicObj = new \Zrashwani\KeyPic\KeyPic($psrRequest); //initiate and configure your keypic object
+$keypicObj = new KeyPic($psrRequest); //initiate and configure keypic object
 $keypicObj = $keypicObj->setFormID('YOUR_KEYPIC_FORM_ID') //set form ID
                        ->setDebug(true) // set debug mode
                        ->setTokenInputName("keypic_token"); //hidden input name
