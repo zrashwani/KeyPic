@@ -37,11 +37,14 @@ if($psrRequest->getMethod() == "POST"){
     $username     = $data['NAME_INPUT'];
     $message      = $data['MESSAGE_INPUT'];
     
+    //Detect if entry is Spam? from 0% to 100%
     $spam = $keypicObj->isSpam($email, $username, $message);
-    if($spam){
-          echo "Keypic spam percentage = ".$spam;
+    if($spam === false){
+       echo "Cannot determine spam percentage.";
+    }elseif($spam > 60){ //if spam percentage larger than certain number
+        echo "user and/or submitted data seems spammy, spam percentage = ".$spam;
     }else{
-           echo "Spam value is empty";
+        echo "Not Spam";
     }
 }
 ```
