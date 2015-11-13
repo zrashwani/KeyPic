@@ -5,6 +5,17 @@ namespace Zrashwani\KeyPic;
 use Psr\Http\Message\ServerRequestInterface;
 use GuzzleHttp\Psr7;
 
+/**
+ * KeyPic
+ *
+ * This class will provide a wrapper on keypic webservice for anti-spam
+ * compliant with PSR-7 requests
+ *
+ * @package Keypic
+ * @author  Zeid Rashwani <http://zrashwani.com>
+ * @version 0.0.1
+ */
+
 class KeyPic
 {
 
@@ -182,7 +193,7 @@ class KeyPic
     }
 
     /**
-     *
+     * requesting new token or getting its value if it is already generated
      * @param type $Token
      * @param type $ClientEmailAddress
      * @param type $ClientUsername
@@ -216,6 +227,8 @@ class KeyPic
             if ($response['status'] == 'new_token') {
                 $this->Token = $response['Token'];
                 return $response['Token'];
+            } elseif ($response['status'] == 'error') {
+                throw new \Exception("Keypic error generation, ".$response['error']);
             }
         }
 
@@ -276,9 +289,9 @@ class KeyPic
      * @param string $ClientUsername
      * @param string $ClientMessage
      * @param string $ClientFingerprint
+     * @throw \Exception
      * @return array
      *
-     * @todo amend to return array
      */
     public function isSpam(
         $ClientEmailAddress = '',
@@ -303,11 +316,11 @@ class KeyPic
             if ($response['status'] == 'response') {
                 return $response['spam'];
             } elseif ($response['status'] == 'error') {
-                return $response['error'];
+                throw new \Exception("Error validating keypic token, error: ".$response['error']);
             }
+        } else {
+            throw new \Exception("Empty keypic token or Form ID");
         }
-
-        return false;
     }
 
     /**
