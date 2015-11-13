@@ -289,7 +289,8 @@ class KeyPic
      * @param string $WidthHeight
      * @return String
      */
-    public function renderHtml($RequestType = 'getScript', $WidthHeight = '336x280'){
+    public function renderHtml($RequestType = 'getScript', $WidthHeight = '336x280')
+    {
         return $this->getTokenInput().$this->getIt($RequestType, $WidthHeight);
     }
 
@@ -366,22 +367,24 @@ class KeyPic
      * @return boolean|array
      */
     private function sendRequest(array $fields)
-    {                
+    {
         $client = new \GuzzleHttp\Client(['timeout'=>3]);
-        $response = $client->post("http://".$this->host, 
-             ['headers' => ['content-type' => 'application/x-www-form-urlencoded',
+        $response = $client->post(
+            "http://".$this->host,
+            ['headers' => ['content-type' => 'application/x-www-form-urlencoded',
                             'User-Agent'   => $this->UserAgent],
               'body'  => $fields,
-              'version' => 1.0  
-              ]);
+              'version' => 1.0
+              ]
+        );
         
-        $result = $response->getBody()->getContents();
+             $result = $response->getBody()->getContents();
         
         if (empty($result) !== true) {
             return json_decode($result, true);
         }
 
-        return false;
+                return false;
     }
     
     /**
@@ -403,8 +406,8 @@ class KeyPic
         $Quantity = 1
     ) {
         
-            $serverParams = $this->request->getServerParams();           
-            $fields = [];            
+            $serverParams = $this->request->getServerParams();
+            $fields = [];
             
             $fields['FormID'] = $this->FormID;
             $fields['RequestType'] = $RequestType;
