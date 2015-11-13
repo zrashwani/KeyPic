@@ -205,7 +205,7 @@ class KeyPic
      * @return boolean
      */
     public function getToken(
-        $Token,
+        $Token = '',
         $ClientEmailAddress = '',
         $ClientUsername = '',
         $ClientMessage = '',
